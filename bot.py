@@ -9,5 +9,6 @@ bot = DiscordBot(
 )
 
 bot.load_extension("cogs.appeals")
+bot.load_extension("cogs.misc")
 
 bot.run("token.txt")
