@@ -10,4 +10,4 @@ bot = DiscordBot(
 
 bot.load_extension("cogs.appeals")
 
-bot.run("token.txt")  # TODO: This is running the test bot's token
+bot.run("token.txt")
