@@ -1,6 +1,7 @@
 version: "3.9"
 services:
     prison_warden:
+        build: .
         volumes:
             - ./:/usr/src/bot
-        build: .
+        
