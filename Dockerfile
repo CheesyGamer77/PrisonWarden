@@ -3,12 +3,11 @@ FROM python:3
 WORKDIR /usr/src/bot
 
 # install required dependencies
-RUN pip3 install -U python-dateutil
-RUN pip3 install -U cheesyutils
-RUN pip3 install -U cheesyutils
-RUN pip3 install -U aiohttp
-RUN pip3 install -U discord.py
-RUN pip3 install -U aiosqlite
+RUN pip3 install python-dateutil
+RUN pip3 install cheesyutils
+RUN pip3 install aiohttp
+RUN pip3 install discord.py
+RUN pip3 install aiosqlite
 
 
 # start bot
