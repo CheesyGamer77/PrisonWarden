@@ -2,7 +2,7 @@ from cheesyutils.discord_bots import DiscordBot
 
 
 bot = DiscordBot(
-    prefix=";",
+    prefix=".",
     color="#843da4",
     members_intent=True,
     status="idle"
