@@ -64,6 +64,10 @@ class Appeals(commands.Cog):
     def __init__(self, bot: DiscordBot):
         self.bot = bot
 
+    @staticmethod
+    def _is_stale_invite(invite: discord.Invite) -> bool:
+        return invite.uses == 0 and invite.max_uses == 1 and (datetime.datetime.utcnow() - invite.created_at).days >= 7
+
     async def _fetch_channel_type(self, guild: discord.Guild, config_type: ConfigType, channel: Enum) -> Optional[discord.TextChannel]:
         row = await self.bot.database.query_first(
             sql=f"SELECT {channel.value} FROM {config_type.value} WHERE server_id = ?",
@@ -348,11 +352,8 @@ class Appeals(commands.Cog):
         List[discord.Invite]
         """
 
-        def is_stale(invite: discord.Invite):
-            return invite.uses == 0 and invite.max_uses == 1 and (datetime.datetime.utcnow() - invite.created_at).days >= 1
-
         invites = await guild.invites()
-        return sorted([invite for invite in invites if is_stale(invite)], key=lambda i: i.created_at)
+        return sorted([invite for invite in invites if self._is_stale_invite(invite)], key=lambda i: i.created_at)
     
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
@@ -395,7 +396,7 @@ class Appeals(commands.Cog):
         invites = sorted(invites, key=lambda i: i.created_at)
         ret = []
         for invite in invites:
-            if invite.max_uses == 1 and (datetime.datetime.utcnow() - invite.created_at).days >= 1:
+            if self._is_stale_invite(invite):
                 ret.append(invite)
         
         return ret
