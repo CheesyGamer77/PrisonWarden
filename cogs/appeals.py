@@ -380,7 +380,7 @@ class Appeals(commands.Cog):
                 invites,
                 base_embed=Embed(
                     title="Active Invites",
-                    description="• [{0.code}]({0.url}) - {0.uses}/{0.max_uses} uses - Created {1}",
+                    description="• [{0[0].code}]({0[0].url}) - {0[0].uses}/{0[0].max_uses} uses - Created {0[1]}",
                     color=self.bot.color,
                     author=ctx.guild
                 )
@@ -427,7 +427,7 @@ class Appeals(commands.Cog):
                 invites,
                 base_embed=Embed(
                     title="Stale One-Time Invites to be Purged",
-                    description="• [{0.code}]({0.url}) - {0.inviter.mention} - Created {1}",
+                    description="• [{0[0].code}]({0[0].url}) - {0[0].inviter.mention} - Created {0[1]}",
                     color=self.bot.color,
                     author=ctx.guild
                 )
