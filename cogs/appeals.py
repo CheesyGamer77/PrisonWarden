@@ -322,7 +322,6 @@ class Appeals(commands.Cog):
 
             await channel.send(content, embed=embed)
             
-
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         # TODO: This will eventually be the auto appeal thingymagig
@@ -367,13 +366,21 @@ class Appeals(commands.Cog):
 
         if not ctx.invoked_subcommand and not ctx.subcommand_passed:
             invites = await ctx.guild.invites()
-            invites = sorted(invites, key=lambda i: i.created_at)
+
+            def func(inv: discord.Invite):
+                if inv.max_uses == 0:
+                    inv.max_uses = "∞"
+                return inv
+
+            invites = map(func, sorted(invites, key=lambda i: i.created_at))
+
+            invites = [[inv, human_timedelta(inv.created_at)] for inv in invites]
 
             await Paginator.from_sequence(
                 invites,
                 base_embed=Embed(
                     title="Active Invites",
-                    description="{0.url} - {0.inviter.mention} - Used {0.uses}/{0.max_uses} times",
+                    description="• [{0.code}]({0.url}) - {0.uses}/{0.max_uses} uses - Created {1}",
                     color=self.bot.color,
                     author=ctx.guild
                 )
@@ -413,12 +420,14 @@ class Appeals(commands.Cog):
         invites = await self._fetch_all_stale_single_use_invites(ctx.guild)
 
         if invites:
-            # TODO - I'd much rather have this display the invite creation date rather than the use count for each invite
+            # get the human timedelta for each invite
+            invites = [[inv, human_timedelta(inv.created_at)] for inv in invites]
+
             await Paginator.from_sequence(
                 invites,
                 base_embed=Embed(
                     title="Stale One-Time Invites to be Purged",
-                    description="{0.url} - {0.inviter.mention} - Used {0.uses}/{0.max_uses} times",
+                    description="• [{0.code}]({0.url}) - {0.inviter.mention} - Created {1}",
                     color=self.bot.color,
                     author=ctx.guild
                 )
