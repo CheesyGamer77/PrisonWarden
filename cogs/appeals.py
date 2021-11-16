@@ -759,7 +759,7 @@ class Appeals(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
     @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_messages=True, add_reactions=True)
-    @commands.command(name="appeals", aliases=["appeals"])
+    @commands.command(name="appeals", aliases=["appeal"])
     async def appeals_command(self, ctx: commands.Context, appeal_id: Optional[int] = None):
         """
         Returns the list of current users with appeal roles
