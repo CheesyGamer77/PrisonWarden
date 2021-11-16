@@ -829,7 +829,7 @@ class Appeals(commands.Cog):
                             value=appeal.top_role.mention
                         ).add_field(
                             name="Last Joined",
-                            value=human_timedelta(member.joined_at)
+                            value=self._get_time_string_since(member.joined_at)
                         )
 
                         # fetch note count
